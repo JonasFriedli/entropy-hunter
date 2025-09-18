@@ -2,7 +2,7 @@
 
 ![EntropyHunter header](header.jpg)
 
-Token entropy and bias analyzer with candidate generation — a compact, scriptable analogue to Burp Sequencer.
+Token entropy and bias analyzer with candidate generation - a compact, scriptable analogue to Burp Sequencer.
 
 - Analyze a corpus of tokens (one per line)
 - Per-position stats: unique chars, most common char & ratio, Shannon entropy, max entropy
