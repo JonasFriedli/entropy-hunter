@@ -66,35 +66,76 @@ Example: `guesses=100k`, `sample=50k` → target ~`log2(5e9) ≈ 32.2 bits`.
 
 ## Mathematical background (in depth)
 
-Let a token be positions \(i=1..L\). With per-position empirical frequencies \(p_i(c)\),
-the **Shannon entropy** is
-\( H_i = -\sum_c p_i(c)\log_2 p_i(c) \).
-Uniform over \(N_i\) symbols gives \(H_i=\log_2 N_i\) bits; bias reduces \(H_i\).
+Let a token be positions *i = 1..L*. With per-position empirical frequencies *pᵢ(c)*, the **Shannon entropy** is:
 
-Assuming independence,
-\( H_{\text{total}}=\sum_i H_i \),
-effective search space
-\( S_{\text{eff}}=2^{H_{\text{total}}} \),
-hit probability per random guess
-\( p=2^{-H_{\text{total}}} \),
-and expected guesses
-\( \mathbb{E}[\text{guesses}]\approx 2^{H_{\text{total}}-1} \).
+```
+Hᵢ = – ∑ pᵢ(c) · log₂ pᵢ(c)
+```
+
+If characters are uniform over *Nᵢ* symbols, then:
+
+```
+Hᵢ = log₂(Nᵢ)   (bits)
+```
+
+Bias reduces *Hᵢ*.
+
+Assuming independence across positions:
+
+```
+H_total = ∑ Hᵢ
+S_eff   = 2^(H_total)              (effective search space)
+p       ≈ 2^(–H_total)             (probability per random guess)
+E[guesses] ≈ 2^(H_total – 1)       (expected guesses on average)
+```
+
+---
 
 ### Speedup from anomalies
-Dropping entropy from \(H\) to \(H'\) multiplies attacker advantage by \(2^{H-H'}\).
-Small per-position losses compound (e.g., 0.25 bit loss across 16 positions → 4 bits total → 16× speedup).
+
+Dropping entropy from *H* to *H′* multiplies attacker advantage by:
+
+```
+speedup = 2^(H – H′)
+```
+
+Small per-position losses add up.
+Example: 0.25 bit loss × 16 positions = 4 bits total → \~16× faster attack.
+
+---
 
 ### Subtle model (used by `theory` and the demo)
-Each position uses a subset of size \(k\) from the full alphabet; one symbol is **favored** with weight \(w\) and others weight \(1\).
-Per-position probabilities: \(p_f = w/(w+k-1)\), \(p_o = 1/(w+k-1)\).
+
+Each position uses a subset of size *k* from the full alphabet;
+one symbol is **favored** with weight *w* and others weight *1*.
+
+Per-position probabilities:
+
+```
+p_f = w / (w + k – 1)
+p_o = 1 / (w + k – 1)
+```
+
 Per-position entropy:
-\( H_{\text{pos}} = -p_f\log_2 p_f - (k-1)p_o\log_2 p_o \),
-and \( H_{\text{total}} = L \cdot H_{\text{pos}} \).
+
+```
+H_pos = – p_f log₂(p_f) – (k–1) · p_o log₂(p_o)
+```
+
+Total entropy:
+
+```
+H_total = L · H_pos
+```
+
+---
 
 ### Practical constraints
-- Rate limiting, token TTL, and anomaly detection can dwarf a purely statistical attack.
-- Large samples are needed to measure small biases reliably.
-- Use CSPRNG tokens ≥ 128 bits to remain safe even under strong sampling.
 
-## License
-MIT
+* Rate limiting, token TTL, and anomaly detection can dwarf purely statistical attacks.
+* Large samples are required to measure small biases reliably.
+* Use CSPRNG tokens ≥ 128 bits to remain safe even under strong sampling.
+
+
+Do you want me to regenerate the full **README.md** with this replacement, so you can drop it in directly?
+
