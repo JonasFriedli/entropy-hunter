@@ -136,6 +136,3 @@ H_total = L · H_pos
 * Large samples are required to measure small biases reliably.
 * Use CSPRNG tokens ≥ 128 bits to remain safe even under strong sampling.
 
-
-Do you want me to regenerate the full **README.md** with this replacement, so you can drop it in directly?
-
