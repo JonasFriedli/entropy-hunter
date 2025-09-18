@@ -16,7 +16,7 @@ Token entropy and bias analyzer with candidate generation — a compact, scripta
 ## Quick start
 
 ```bash
-git clone https://github.com/<you>/entropy-hunter.git
+git clone https://github.com/JonasFriedli/entropy-hunter.git
 cd entropy-hunter
 python3 -m venv venv && source venv/bin/activate
 ```
