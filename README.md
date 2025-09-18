@@ -9,7 +9,7 @@ Token entropy and bias analyzer with candidate generation — a compact, scripta
 - Includes demos for **vulnerable**, **secure**, and **subtle** token generators
 - A **theory** tool to predict entropy & expected matches for subtle-mode parameters
 
-> Educational use only. Only test systems you have explicit permission to assess.
+> Educational use only. Only test systems you have explicit permission to assess. This repository is experimental.
 
 ## Quick start
 
