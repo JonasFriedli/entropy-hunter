@@ -59,14 +59,9 @@ python3 demos/vulnerable_demo.py --mode subtle     --sample-size 50000 --guesses
 Tip: Aim for `H_total ≈ log2(guesses * sample_size)` if you want to see a few matches.  
 Example: `guesses=100k`, `sample=50k` → target ~`log2(5e9) ≈ 32.2 bits`.
 
-## How this helps
-
-- **Blue team:** Confirm tokens are using CSPRNG, no fixed prefixes/suffixes, no timestamp/counter leakage; quantify entropy.
-- **Red team:** From captured tokens, detect positional bias and focus guesses; simulate risk given rate limits/lifetimes.
-
 ---
 
-## Mathematical background (in depth)
+## Mathematical background
 
 Let a token be positions *i = 1..L*. With per-position empirical frequencies *pᵢ(c)*, the **Shannon entropy** is:
 
@@ -106,35 +101,8 @@ Example: 0.25 bit loss × 16 positions = 4 bits total → \~16× faster attack.
 
 ---
 
-### Subtle model (used by `theory` and the demo)
-
-Each position uses a subset of size *k* from the full alphabet;
-one symbol is **favored** with weight *w* and others weight *1*.
-
-Per-position probabilities:
-
-```
-p_f = w / (w + k – 1)
-p_o = 1 / (w + k – 1)
-```
-
-Per-position entropy:
-
-```
-H_pos = – p_f log₂(p_f) – (k–1) · p_o log₂(p_o)
-```
-
-Total entropy:
-
-```
-H_total = L · H_pos
-```
-
----
-
 ### Practical constraints
 
-* Rate limiting, token TTL, and anomaly detection can dwarf purely statistical attacks.
 * Large samples are required to measure small biases reliably.
 * Use CSPRNG tokens ≥ 128 bits to remain safe even under strong sampling.
 
